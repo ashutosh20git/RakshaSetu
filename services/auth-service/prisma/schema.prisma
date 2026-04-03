@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures=["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas=["auth"]
+}
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  phone      String   @unique
+  email      String?  @unique
+  password   String
+  role       Role     @default(CIVILIAN)
+  isVerified Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@schema("auth")
+}
+
+enum Role {
+  CIVILIAN
+  VOLUNTEER
+  AUTHORITY
+
+  @@schema("auth")
+}
