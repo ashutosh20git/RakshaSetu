@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"] 
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["heartbeat"]
+}
+
+model Heartbeat {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  lastSeen  DateTime @default(now())
+  name      String?
+  phone     String?
+  latitude  Float?
+  longitude Float?
+  isAlert   Boolean  @default(false)
+
+  @@schema("heartbeat")
+}
