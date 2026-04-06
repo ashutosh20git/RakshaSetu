@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["safezone"]
+}
+
+model SafeZone {
+  id          String   @id @default(uuid())
+  reportedBy  String
+  description String
+  latitude    Float
+  longitude   Float
+  type        String   @default("SHELTER")
+  isVerified  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@schema("safezone")
+}
