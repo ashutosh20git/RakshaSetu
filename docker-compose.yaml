@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   postgres:
     image: postgres:15
@@ -12,10 +14,135 @@ services:
       - pgdata:/var/lib/postgresql/data
     secrets:
       - postgres_password
-  
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crisis_user -d crisisconnect"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "3000:3000"
+    environment:
+      AUTH_SERVICE: http://auth-service:3001
+      SOS_SERVICE: http://sos-service:3002
+      SUPPLY_SERVICE: http://supply-service:3003
+      SAFEZONE_SERVICE: http://safezone-service:3004
+      HEARTBEAT_SERVICE: http://heartbeat-service:3005
+      MENTALHEALTH_SERVICE: http://mentalhealth-service:3006
+    depends_on:
+      - auth-service
+      - sos-service
+      - supply-service
+      - safezone-service
+      - heartbeat-service
+      - mentalhealth-service
+
+  auth-service:
+    build: ./services/auth-service
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgresql://crisis_user:crisis_pass@postgres:5432/crisisconnect?schema=auth
+      JWT_SECRET_FILE: /run/secrets/jwt_secret
+      GEMINI_API_KEY_FILE: /run/secrets/gemini_api_key
+      PORT: 3001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    secrets:
+      - postgres_password
+      - jwt_secret
+      - gemini_api_key
+
+  sos-service:
+    build: ./services/sos-service
+    ports:
+      - "3002:3002"
+    environment:
+      DATABASE_URL: postgresql://crisis_user:crisis_pass@postgres:5432/crisisconnect?schema=sos
+      JWT_SECRET_FILE: /run/secrets/jwt_secret
+      GEMINI_API_KEY_FILE: /run/secrets/gemini_api_key
+      PORT: 3002
+    depends_on:
+      postgres:
+        condition: service_healthy
+    secrets:
+      - postgres_password
+      - jwt_secret
+      - gemini_api_key
+
+  supply-service:
+    build: ./services/supply-service
+    ports:
+      - "3003:3003"
+    environment:
+      DATABASE_URL: postgresql://crisis_user:crisis_pass@postgres:5432/crisisconnect?schema=supply
+      JWT_SECRET_FILE: /run/secrets/jwt_secret
+      GEMINI_API_KEY_FILE: /run/secrets/gemini_api_key
+      PORT: 3003
+    depends_on:
+      postgres:
+        condition: service_healthy
+    secrets:
+      - postgres_password
+      - jwt_secret
+      - gemini_api_key
+
+  safezone-service:
+    build: ./services/safezone-service
+    ports:
+      - "3004:3004"
+    environment:
+      DATABASE_URL: postgresql://crisis_user:crisis_pass@postgres:5432/crisisconnect?schema=safezone
+      JWT_SECRET_FILE: /run/secrets/jwt_secret
+      GEMINI_API_KEY_FILE: /run/secrets/gemini_api_key
+      PORT: 3004
+    depends_on:
+      postgres:
+        condition: service_healthy
+    secrets:
+      - postgres_password
+      - jwt_secret
+      - gemini_api_key
+
+  heartbeat-service:
+    build: ./services/heartbeat-service
+    ports:
+      - "3005:3005"
+    environment:
+      DATABASE_URL: postgresql://crisis_user:crisis_pass@postgres:5432/crisisconnect?schema=heartbeat
+      JWT_SECRET_FILE: /run/secrets/jwt_secret
+      GEMINI_API_KEY_FILE: /run/secrets/gemini_api_key
+      PORT: 3005
+    depends_on:
+      postgres:
+        condition: service_healthy
+    secrets:
+      - postgres_password
+      - jwt_secret
+      - gemini_api_key
+
+  mentalhealth-service:
+    build: ./services/mentalhealth-service
+    ports:
+      - "3006:3006"
+    environment:
+      JWT_SECRET_FILE: /run/secrets/jwt_secret
+      GEMINI_API_KEY_FILE: /run/secrets/gemini_api_key
+      PORT: 3006
+    secrets:
+      - jwt_secret
+      - gemini_api_key
+
 secrets:
   postgres_password:
     file: ./secrets/postgres_password.txt
+  jwt_secret:
+    file: ./secrets/jwt_secret.txt
+  gemini_api_key:
+    file: ./secrets/gemini_api_key.txt
 
 volumes:
   pgdata:
