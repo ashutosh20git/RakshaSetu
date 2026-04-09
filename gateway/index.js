@@ -1,8 +1,10 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
+app.use(cors());
 
 app.use('/auth', createProxyMiddleware({
   target: process.env.AUTH_SERVICE,

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RakshaSetu | Crisis Management Command Center</title>
+    <!-- Premium Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated background layers -->
+    <div class="ambient-background"></div>
+    <div class="grid-overlay"></div>
+
+    <div id="app" class="app-container">
+        <!-- AUTHENTICATION VIEW -->
+        <section id="view-auth" class="view-section active">
+            <div class="auth-wrapper">
+                <header class="auth-header">
+                    <div class="logo-box">
+                        <div class="logo-icon">🛡️</div>
+                        <h1>RakshaSetu</h1>
+                    </div>
+                    <p class="subtitle">Secure Crisis Response Portal</p>
+                </header>
+
+                <div class="glass-card auth-card">
+                    <div class="tab-controller">
+                        <button class="tab-btn active" data-target="login">Login</button>
+                        <button class="tab-btn" data-target="register">Register</button>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="form-login" class="auth-form active" onsubmit="handleAuth(event, 'login')">
+                        <div class="input-group">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Password</label>
+                            <input type="password" name="password" placeholder="your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-login">
+                            <span class="btn-text">Authenticate</span>
+                            <span class="loader hidden"></span>
+                        </button>
+                    </form>
+
+                    <!-- Register Form -->
+                    <form id="form-register" class="auth-form hidden" onsubmit="handleAuth(event, 'register')">
+                        <div class="input-group">
+                            <label>Full Name</label>
+                            <input type="text" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="your_name@example.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Password</label>
+                            <input type="password" name="password" placeholder="Your password" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Role</label>
+                            <div class="custom-select-wrapper">
+                                <select name="role">
+                                    <option value="CIVILIAN">Standard Civilian</option>
+                                    <option value="AUTHORITY">Crisis Authority</option>
+                                    <option value="VOLUNTEER">Volunteer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-register">
+                            <span class="btn-text">Create Identity</span>
+                            <span class="loader hidden"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- DASHBOARD VIEW -->
+        <section id="view-dashboard" class="view-section hidden">
+            <!-- Sidebar -->
+            <aside class="sidebar glass-panel">
+                <div class="sidebar-header">
+                    <div class="logo-icon small">🛡️</div>
+                    <h2>RakshaSetu</h2>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <button class="nav-item active" onclick="navigate('overview')">
+                        <span class="icon">📊</span> Overview
+                    </button>
+                    <button class="nav-item" onclick="navigate('sos')">
+                        <span class="icon">🚨</span> SOS Center
+                    </button>
+                    <button class="nav-item" onclick="navigate('supply')">
+                        <span class="icon">📦</span> Supplies
+                    </button>
+                    <button class="nav-item" onclick="navigate('safezone')">
+                        <span class="icon">🗺️</span> Safe Zones
+                    </button>
+                    <button class="nav-item" onclick="navigate('mentalhealth')">
+                        <span class="icon">🧠</span> Mental Health
+                    </button>
+                    <button class="nav-item" onclick="navigate('settings')">
+                        <span class="icon">⚙️</span> Profile
+                    </button>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="user-info">
+                        <div class="avatar" id="user-avatar">?</div>
+                        <div class="user-meta">
+                            <span class="name" id="display-name">Loading...</span>
+                            <span class="badge" id="display-role">ROLE</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-ghost full-width logout-btn" onclick="logout()">
+                        Sign Out
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <!-- Topbar -->
+                <header class="topbar glass-panel">
+                    <div class="page-title">
+                        <h2 id="current-page-title">Overview</h2>
+                        <p class="status-indicator">
+                            <span class="pulse-dot"></span> System Online
+                        </p>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-danger action-btn" onclick="triggerSOS()">
+                            ⚡ TRIGER EMERGENCY
+                        </button>
+                    </div>
+                </header>
+
+                <div class="scroll-container">
+                    
+                    <!-- Overview Module -->
+                    <div id="module-overview" class="module active">
+                        <div class="metrics-grid">
+                            <div class="metric-card glass-card">
+                                <h3>Active Alerts</h3>
+                                <div class="metric-value danger">24</div>
+                                <p class="metric-diff">+3 since yesterday</p>
+                            </div>
+                            <div class="metric-card glass-card">
+                                <h3>Safe Zones Open</h3>
+                                <div class="metric-value success">8</div>
+                                <p class="metric-diff">All verified</p>
+                            </div>
+                            <div class="metric-card glass-card">
+                                <h3>Supplies Deployed</h3>
+                                <div class="metric-value waring">1,240</div>
+                                <p class="metric-diff">Critical shortage in zone 4</p>
+                            </div>
+                        </div>
+                        <div class="glass-card mt-2">
+                            <h3>Global Feed</h3>
+                            <div id="feed-container" class="feed">
+                                <div class="feed-item skeleton"></div>
+                                <div class="feed-item skeleton"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SOS Module -->
+                    <div id="module-sos" class="module hidden">
+                        <div class="glass-card">
+                            <h2>AI-Powered Emergency Triage</h2>
+                            <p class="text-sec mb-2">Describe the emergency. Gemini will classify and route it automatically.</p>
+                            
+                            <form id="sos-form" onsubmit="reportEmergency(event)">
+                                <div class="input-group">
+                                    <textarea id="sos-description" rows="4" placeholder="E.g. There is a fire spreading fast on 5th avenue, people are trapped." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-danger" id="btn-sos-submit">
+                                    <span class="btn-text">Analyze & Broadcast Alert</span>
+                                    <span class="loader hidden"></span>
+                                </button>
+                            </form>
+
+                            <div id="sos-result" class="result-box hidden mt-2"></div>
+                        </div>
+                    </div>
+
+                    <!-- Supply Module -->
+                    <div id="module-supply" class="module hidden">
+                        <div class="glass-card">
+                            <h2>Inventory Management</h2>
+                            <p class="text-sec mb-2">Resources will be updated here. (Connecting to supply-service)</p>
+                            <div class="action-bar mb-2">
+                                <button class="btn btn-primary" onclick="testService('/supply/list')">Fetch Resources</button>
+                            </div>
+                            <div id="supply-data" class="terminal-output">Awaiting command...</div>
+                        </div>
+                    </div>
+
+                    <!-- Safezone Module -->
+                    <div id="module-safezone" class="module hidden">
+                        <div class="glass-card">
+                            <h2>Safe Zone Locator</h2>
+                            <p class="text-sec mb-2">Find the nearest shelters. (Connecting to safezone-service)</p>
+                            <div class="action-bar mb-2">
+                                <button class="btn btn-primary" onclick="testService('/safezone/nearest')">Find Nearest</button>
+                            </div>
+                            <div id="safezone-data" class="terminal-output">Awaiting command...</div>
+                        </div>
+                    </div>
+
+                    <!-- Mental Health Module -->
+                    <div id="module-mentalhealth" class="module hidden">
+                        <div class="glass-card chat-interface">
+                            <h2>Crisis Support AI</h2>
+                            <p class="text-sec mb-2">Speak with our Gemini-powered mental health assistant.</p>
+                            <div id="chat-history" class="chat-history">
+                                <div class="chat-message bot">
+                                    <div class="msg-bubble">Hello, I'm here to support you during this crisis. How are you feeling right now?</div>
+                                </div>
+                            </div>
+                            <form class="chat-input-area" onsubmit="sendChatMessage(event)">
+                                <input type="text" id="chat-input" placeholder="Type your message here..." required>
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Settings Module -->
+                    <div id="module-settings" class="module hidden">
+                        <div class="glass-card">
+                            <h2>Profile Diagnostics</h2>
+                            <p class="text-sec mb-2">Verify your token and access rules.</p>
+                            <div class="action-bar mb-2">
+                                <button class="btn btn-primary" onclick="testService('/auth/me')">Test (/auth/me)</button>
+                                <button class="btn btn-primary" onclick="testService('/auth/admin')">Test (/auth/admin)</button>
+                            </div>
+                            <div id="profile-data" class="terminal-output">Awaiting command...</div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </section>
+        
+        <!-- Global Notification System -->
+        <div id="toast-container" class="toast-container"></div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
