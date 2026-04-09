@@ -173,15 +173,15 @@ async function reportEmergency(e) {
     out.innerHTML = '<span class="pulse-dot" style="display:inline-block"></span> Triage mechanism analyzing via Gemini...';
     
     try {
-        const data = await api('/sos/report', {
+        const data = await api('/sos/trigger', {
             method: 'POST',
-            body: JSON.stringify({ location: 'Unknown', description: desc, mediaUrls: [] })
+            body: JSON.stringify({ latitude: 0.0, longitude: 0.0, description: desc })
         });
         out.innerHTML = `<strong>Triage Complete:</strong><pre>${JSON.stringify(data, null, 2)}</pre>`;
         document.getElementById('sos-form').reset();
     } catch(err) {
-        // Fallback or show error visually if /sos/report doesn't exist yet
-        out.innerHTML = `<span style="color:var(--danger)">Error connecting to SOS routing: ${err.message}</span>\n<br><small>Does POST /sos/report exist?</small>`;
+        // Fallback or show error visually if /sos/trigger fails
+        out.innerHTML = `<span style="color:var(--danger)">Error connecting to SOS routing: ${err.message}</span>\n<br><small>Does POST /sos/trigger exist?</small>`;
     } finally {
         toggleLoader(btnId, false);
     }

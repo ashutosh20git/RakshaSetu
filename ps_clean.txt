@@ -1,0 +1,42 @@
+CONTAINER ID   IMAGE                             COMMAND                  CREATED        STATUS                        PORTS                                         NAMES
+1e7da57a1c2f   rakshasetu-gateway                "docker-entrypoint.s…"   44 hours ago   Exited (255) 41 minutes ago   0.0.0.0:3000->3000/tcp                        rakshasetu-gateway-1
+ed91534d6beb   rakshasetu-supply-service         "docker-entrypoint.s…"   44 hours ago   Exited (255) 41 minutes ago   0.0.0.0:3003->3003/tcp                        rakshasetu-supply-service-1
+eac9c4ef06d0   rakshasetu-auth-service           "docker-entrypoint.s…"   44 hours ago   Exited (255) 41 minutes ago   0.0.0.0:3001->3001/tcp                        rakshasetu-auth-service-1
+0cd04c2db5b6   rakshasetu-mentalhealth-service   "docker-entrypoint.s…"   44 hours ago   Exited (255) 41 minutes ago   0.0.0.0:3006->3006/tcp                        rakshasetu-mentalhealth-service-1
+f72a2421e8ee   rakshasetu-sos-service            "docker-entrypoint.s…"   44 hours ago   Exited (255) 41 minutes ago   0.0.0.0:3002->3002/tcp                        rakshasetu-sos-service-1
+35a6f7cc8ee7   rakshasetu-heartbeat-service      "docker-entrypoint.s…"   44 hours ago   Exited (255) 41 minutes ago   0.0.0.0:3005->3005/tcp                        rakshasetu-heartbeat-service-1
+0bd95e238bc1   rakshasetu-safezone-service       "docker-entrypoint.s…"   44 hours ago   Exited (255) 41 minutes ago   0.0.0.0:3004->3004/tcp                        rakshasetu-safezone-service-1
+35a5658d99b3   postgres:15                       "docker-entrypoint.s…"   44 hours ago   Up 41 minutes (healthy)       0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp   rakshasetu-postgres-1
+98c4eaa2d06a   postgres:15.15-alpine             "docker-entrypoint.s…"   3 weeks ago    Up 41 minutes (healthy)       0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp   skyflo_ai_postgres
+9f291ba048cc   redis:7.4.7-alpine                "docker-entrypoint.s…"   3 weeks ago    Up 41 minutes (healthy)       0.0.0.0:6379->6379/tcp, [::]:6379->6379/tcp   skyflo_ai_redis
+20e248ac4871   notesapi-app                      "docker-entrypoint.s…"   3 weeks ago    Exited (137) 3 weeks ago                                                    notesapi-app-1
+426e03956292   postgres:15                       "docker-entrypoint.s…"   3 weeks ago    Exited (0) 3 weeks ago                                                      notesapi-db-1
+a13b6a8988c4   postgres:16-alpine                "docker-entrypoint.s…"   5 weeks ago    Exited (127) 3 weeks ago                                                    my_postgres_db
+dc2920cd6f90   workflow-api                      "docker-entrypoint.s…"   5 weeks ago    Exited (255) 3 weeks ago      0.0.0.0:3000->3000/tcp                        workflow-api-1
+d62a84e32b4c   cloudnative-app                   "docker-entrypoint.s…"   5 weeks ago    Exited (1) 5 weeks ago                                                      cloudnative-app-1
+c054a1b8913e   cloudnative-worker                "docker-entrypoint.s…"   5 weeks ago    Exited (1) 5 weeks ago                                                      cloudnative-worker-1
+39b808ddf6af   node:24-alpine                    "docker-entrypoint.s…"   5 weeks ago    Exited (254) 5 weeks ago                                                    elastic_kare
+7328eb479edf   ubuntu                            "bash"                   5 weeks ago    Exited (0) 5 weeks ago                                                      condescending_raman
+8d8a915ece4b   test-proxy                        "/docker-entrypoint.…"   5 weeks ago    Exited (1) 5 weeks ago                                                      adoring_northcutt
+7f957058e883   getting-started                   "docker-entrypoint.s…"   5 weeks ago    Exited (0) 5 weeks ago                                                      heuristic_bohr
+c4aedbb76c84   getting-started                   "docker-entrypoint.s…"   5 weeks ago    Created                                                                     amazing_zhukovsky
+6600f168a82b   caa5d6725c2e                      "docker-entrypoint.s…"   5 weeks ago    Created                                                                     exciting_banach
+d8180da29f2b   caa5d6725c2e                      "docker-entrypoint.s…"   5 weeks ago    Created                                                                     infallible_bell
+9d34525f9415   caa5d6725c2e                      "docker-entrypoint.s…"   5 weeks ago    Created                                                                     youthful_kepler
+2c7004ab2112   e22bd5447c70                      "/docker-entrypoint.…"   5 weeks ago    Exited (1) 5 weeks ago                                                      test-proxy
+01818da08ffb   skyflo-ui-hc                      "docker-entrypoint.s…"   5 weeks ago    Exited (0) 5 weeks ago                                                      test-ui
+4db03bcadddf   skyflo-engine:test                "/app/entrypoint.sh"     5 weeks ago    Exited (255) 5 weeks ago                                                    test-engine
+626af583b4b8   0c97cc8ea460                      "/app/entrypoint.sh"     5 weeks ago    Exited (255) 5 weeks ago                                                    skyflo-engine-test
+7ccfebd188b4   skyflo-ui-proxy:hc                "/docker-entrypoint.…"   5 weeks ago    Exited (1) 5 weeks ago                                                      skyflo-ui-proxy-hc
+c563c1536b30   skyflo-ui:hc                      "docker-entrypoint.s…"   5 weeks ago    Exited (0) 5 weeks ago                                                      skyflo-ui-hc
+39be9ff564bb   skyflo-mcp:hc                     "/app/entrypoint.sh"     5 weeks ago    Exited (255) 5 weeks ago                                                    skyflo-mcp-hc
+3ada787b76b1   2117259ba503                      "/app/entrypoint.sh"     5 weeks ago    Exited (255) 5 weeks ago                                                    skyflo-engine-hc
+c7430f2509d6   skyflo-engine                     "/app/entrypoint.sh"     5 weeks ago    Exited (255) 5 weeks ago                                                    engine-test
+1be6e5239461   sample-app                        "/bin/sh -c 'node ap…"   6 weeks ago    Exited (0) 6 weeks ago                                                      elated_mendel
+ccd49589615c   node-base                         "node -e 'console.lo…"   6 weeks ago    Exited (0) 6 weeks ago                                                      musing_napier
+9af6aa94e6ed   2501ashutosh/docker-quickstart    "docker-entrypoint.s…"   6 weeks ago    Exited (137) 6 weeks ago                                                    sweet_banzai
+121c1ab04517   2501ashutosh/docker-quickstart    "docker-entrypoint.s…"   6 weeks ago    Exited (126) 6 weeks ago                                                    ecstatic_mayer
+8328aa5aa2e0   docker/welcome-to-docker:latest   "/docker-entrypoint.…"   6 weeks ago    Exited (0) 6 weeks ago                                                      welcome-to-docker
+0f3ace6dfbed   docker/welcome-to-docker          "/docker-entrypoint.…"   6 weeks ago    Created                                                                     zealous_feistel
+56d202827a15   docker/welcome-to-docker          "/docker-entrypoint.…"   6 weeks ago    Exited (0) 6 weeks ago                                                      quizzical_mclaren
+1190993f3461   hello-world                       "/hello"                 6 weeks ago    Exited (0) 6 weeks ago                                                      priceless_leakey
