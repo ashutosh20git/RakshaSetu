@@ -193,6 +193,31 @@ function triggerSOS() {
     showToast('Emergency module engaged.', true);
 }
 
+async function requestSupply(e) {
+    e.preventDefault();
+    const btnId = 'btn-supply-submit';
+    toggleLoader(btnId, true);
+    
+    const type = document.getElementById('supply-type').value;
+    const desc = document.getElementById('supply-desc').value;
+    
+    try {
+        const data = await api('/supply/request', {
+            method: 'POST',
+            body: JSON.stringify({ type, description: desc, latitude: 0.0, longitude: 0.0 })
+        });
+        showToast('Resource request submitted successfully!');
+        document.getElementById('supply-form').reset();
+        
+        // Auto-fetch updated list
+        testService('/supply/requests');
+    } catch(err) {
+        showToast(err.message, true);
+    } finally {
+        toggleLoader(btnId, false);
+    }
+}
+
 // Chat UI
 async function sendChatMessage(e) {
     e.preventDefault();

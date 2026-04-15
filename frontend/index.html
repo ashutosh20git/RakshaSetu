@@ -61,7 +61,7 @@
                     </form>
 
                     <!-- Register Form -->
-                    <form id="form-register" class="auth-form hidden" onsubmit="handleAuth(event, 'register')">
+                    <form id="form-register" class="auth-form" onsubmit="handleAuth(event, 'register')">
                         <div class="form-row">
                             <div class="input-group">
                                 <label>Full Name</label>
@@ -116,7 +116,7 @@
         </section>
 
         <!-- DASHBOARD VIEW -->
-        <section id="view-dashboard" class="view-section hidden">
+        <section id="view-dashboard" class="view-section">
             <!-- Sidebar -->
             <aside class="sidebar sub-glass">
                 <div class="sidebar-header">
@@ -222,7 +222,7 @@
                         </div>
 
                         <!-- SOS Module -->
-                        <div id="module-sos" class="module hidden">
+                        <div id="module-sos" class="module">
                             <div class="glass-card max-w-3xl">
                                 <div class="flex-header mb-6">
                                     <div class="icon-circle danger-bg">
@@ -251,7 +251,7 @@
                         </div>
 
                         <!-- Supply Module -->
-                        <div id="module-supply" class="module hidden">
+                        <div id="module-supply" class="module">
                             <div class="glass-card max-w-3xl">
                                 <div class="flex-header mb-6">
                                     <div class="icon-circle primary-bg">
@@ -263,8 +263,37 @@
                                     </div>
                                 </div>
                                 
-                                <div class="action-bar mb-4">
-                                    <button class="btn btn-secondary" onclick="testService('/supply/requests')"><i data-lucide="refresh-cw"></i> Fetch Resources</button>
+                                <form id="supply-form" onsubmit="requestSupply(event)" class="mb-6 border-bottom pb-4">
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>Resource Type</label>
+                                            <div class="input-wrapper select-wrapper">
+                                                <i data-lucide="box"></i>
+                                                <select id="supply-type" required>
+                                                    <option value="FOOD">Food & Water</option>
+                                                    <option value="MEDICAL">Medical Supplies</option>
+                                                    <option value="SHELTER">Shelter Equipment</option>
+                                                </select>
+                                                <i data-lucide="chevron-down" class="select-chevron"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Specific Details</label>
+                                        <div class="input-wrapper">
+                                            <textarea id="supply-desc" rows="3" placeholder="E.g. Require 50 bottles of water and basic first aid kits" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions mt-2">
+                                        <button type="submit" class="btn btn-primary" id="btn-supply-submit">
+                                            <i data-lucide="send"></i> <span class="btn-text">Submit Request</span>
+                                            <span class="loader hidden"></span>
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <div class="action-bar mb-4 mt-6">
+                                    <button class="btn btn-secondary" onclick="testService('/supply/requests')"><i data-lucide="refresh-cw"></i> Fetch Resource Requests</button>
                                 </div>
                                 <div class="code-window">
                                     <div class="window-header">
@@ -277,7 +306,7 @@
                         </div>
 
                         <!-- Safezone Module -->
-                        <div id="module-safezone" class="module hidden">
+                        <div id="module-safezone" class="module">
                             <div class="glass-card max-w-3xl">
                                 <div class="flex-header mb-6">
                                     <div class="icon-circle primary-bg">
@@ -303,7 +332,7 @@
                         </div>
 
                         <!-- Mental Health Module -->
-                        <div id="module-mentalhealth" class="module hidden">
+                        <div id="module-mentalhealth" class="module">
                             <div class="glass-card chat-interface max-w-3xl">
                                 <div class="flex-header border-bottom pb-4 mb-4">
                                     <div class="icon-circle info-bg">
@@ -336,7 +365,7 @@
                         </div>
 
                         <!-- Settings Module -->
-                        <div id="module-settings" class="module hidden">
+                        <div id="module-settings" class="module">
                             <div class="glass-card max-w-3xl">
                                 <div class="flex-header mb-6">
                                     <div class="icon-circle gray-bg">
