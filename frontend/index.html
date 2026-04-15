@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RakshaSetu | Crisis Management Command Center</title>
-    <!-- Premium Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>RakshaSetu | Crisis Management Portal</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Animated background layers -->
-    <div class="ambient-background"></div>
-    <div class="grid-overlay"></div>
+    <!-- Abstract Ambient Background -->
+    <div class="ambient-background">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+    <div class="noise-overlay"></div>
 
     <div id="app" class="app-container">
         <!-- AUTHENTICATION VIEW -->
@@ -19,29 +26,35 @@
             <div class="auth-wrapper">
                 <header class="auth-header">
                     <div class="logo-box">
-                        <div class="logo-icon">🛡️</div>
+                        <i data-lucide="shield-check" class="brand-icon"></i>
                         <h1>RakshaSetu</h1>
                     </div>
-                    <p class="subtitle">Secure Crisis Response Portal</p>
+                    <p class="subtitle">Secure Crisis Response Command</p>
                 </header>
 
                 <div class="glass-card auth-card">
                     <div class="tab-controller">
-                        <button class="tab-btn active" data-target="login">Login</button>
-                        <button class="tab-btn" data-target="register">Register</button>
+                        <button class="tab-btn active" data-target="login">Sign In</button>
+                        <button class="tab-btn" data-target="register">Create Account</button>
                     </div>
 
                     <!-- Login Form -->
                     <form id="form-login" class="auth-form active" onsubmit="handleAuth(event, 'login')">
                         <div class="input-group">
                             <label>Phone Number</label>
-                            <input type="tel" name="phone" placeholder="Enter your phone number" required>
+                            <div class="input-wrapper">
+                                <i data-lucide="phone"></i>
+                                <input type="tel" name="phone" placeholder="+1 (555) 000-0000" required>
+                            </div>
                         </div>
                         <div class="input-group">
                             <label>Password</label>
-                            <input type="password" name="password" placeholder="your password" required>
+                            <div class="input-wrapper">
+                                <i data-lucide="lock"></i>
+                                <input type="password" name="password" placeholder="••••••••" required>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary" id="btn-login">
+                        <button type="submit" class="btn btn-primary full-width mt-4" id="btn-login">
                             <span class="btn-text">Authenticate</span>
                             <span class="loader hidden"></span>
                         </button>
@@ -49,33 +62,51 @@
 
                     <!-- Register Form -->
                     <form id="form-register" class="auth-form hidden" onsubmit="handleAuth(event, 'register')">
-                        <div class="input-group">
-                            <label>Full Name</label>
-                            <input type="text" name="name" placeholder="Enter your name" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Email</label>
-                            <input type="email" name="email" placeholder="your_name@example.com" required>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Full Name</label>
+                                <div class="input-wrapper">
+                                    <i data-lucide="user"></i>
+                                    <input type="text" name="name" placeholder="John Doe" required>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>Email</label>
+                                <div class="input-wrapper">
+                                    <i data-lucide="mail"></i>
+                                    <input type="email" name="email" placeholder="john@example.com" required>
+                                </div>
+                            </div>
                         </div>
                         <div class="input-group">
                             <label>Phone Number</label>
-                            <input type="tel" name="phone" placeholder="Enter your phone number" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Password</label>
-                            <input type="password" name="password" placeholder="Your password" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Role</label>
-                            <div class="custom-select-wrapper">
-                                <select name="role">
-                                    <option value="CIVILIAN">Standard Civilian</option>
-                                    <option value="AUTHORITY">Crisis Authority</option>
-                                    <option value="VOLUNTEER">Volunteer</option>
-                                </select>
+                            <div class="input-wrapper">
+                                <i data-lucide="phone"></i>
+                                <input type="tel" name="phone" placeholder="+1 (555) 000-0000" required>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary" id="btn-register">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Password</label>
+                                <div class="input-wrapper">
+                                    <i data-lucide="lock"></i>
+                                    <input type="password" name="password" placeholder="••••••••" required>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>Role</label>
+                                <div class="input-wrapper select-wrapper">
+                                    <i data-lucide="shield"></i>
+                                    <select name="role">
+                                        <option value="CIVILIAN">Civilian</option>
+                                        <option value="AUTHORITY">Authority</option>
+                                        <option value="VOLUNTEER">Volunteer</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="select-chevron"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary full-width mt-4" id="btn-register">
                             <span class="btn-text">Create Identity</span>
                             <span class="loader hidden"></span>
                         </button>
@@ -87,43 +118,46 @@
         <!-- DASHBOARD VIEW -->
         <section id="view-dashboard" class="view-section hidden">
             <!-- Sidebar -->
-            <aside class="sidebar glass-panel">
+            <aside class="sidebar sub-glass">
                 <div class="sidebar-header">
-                    <div class="logo-icon small">🛡️</div>
+                    <i data-lucide="shield-check" class="brand-icon-small"></i>
                     <h2>RakshaSetu</h2>
                 </div>
                 
                 <nav class="sidebar-nav">
+                    <p class="nav-label">Main Menu</p>
                     <button class="nav-item active" onclick="navigate('overview')">
-                        <span class="icon">📊</span> Overview
+                        <i data-lucide="layout-dashboard" class="icon"></i> Overview
                     </button>
-                    <button class="nav-item" onclick="navigate('sos')">
-                        <span class="icon">🚨</span> SOS Center
+                    <button class="nav-item warning-text" onclick="navigate('sos')">
+                        <i data-lucide="triangle-alert" class="icon"></i> SOS Center
                     </button>
                     <button class="nav-item" onclick="navigate('supply')">
-                        <span class="icon">📦</span> Supplies
+                        <i data-lucide="package" class="icon"></i> Supplies & Aid
                     </button>
                     <button class="nav-item" onclick="navigate('safezone')">
-                        <span class="icon">🗺️</span> Safe Zones
+                        <i data-lucide="map-pinned" class="icon"></i> Safe Zones
                     </button>
+                    
+                    <p class="nav-label mt-4">Support</p>
                     <button class="nav-item" onclick="navigate('mentalhealth')">
-                        <span class="icon">🧠</span> Mental Health
+                        <i data-lucide="brain" class="icon"></i> Mental Health AI
                     </button>
                     <button class="nav-item" onclick="navigate('settings')">
-                        <span class="icon">⚙️</span> Profile
+                        <i data-lucide="settings" class="icon"></i> Profile & Diagnostics
                     </button>
                 </nav>
 
                 <div class="sidebar-footer">
-                    <div class="user-info">
+                    <div class="user-profile">
                         <div class="avatar" id="user-avatar">?</div>
                         <div class="user-meta">
                             <span class="name" id="display-name">Loading...</span>
                             <span class="badge" id="display-role">ROLE</span>
                         </div>
                     </div>
-                    <button class="btn btn-ghost full-width logout-btn" onclick="logout()">
-                        Sign Out
+                    <button class="btn btn-ghost full-width logout-btn mt-2" onclick="logout()">
+                        <i data-lucide="log-out"></i> Sign Out
                     </button>
                 </div>
             </aside>
@@ -131,132 +165,216 @@
             <!-- Main Content Area -->
             <main class="main-content">
                 <!-- Topbar -->
-                <header class="topbar glass-panel">
+                <header class="topbar">
                     <div class="page-title">
                         <h2 id="current-page-title">Overview</h2>
-                        <p class="status-indicator">
-                            <span class="pulse-dot"></span> System Online
-                        </p>
+                        <div class="status-indicator">
+                            <span class="pulse-dot"></span> <span class="status-text">System Online</span>
+                        </div>
                     </div>
                     <div class="actions">
-                        <button class="btn btn-danger action-btn" onclick="triggerSOS()">
-                            ⚡ TRIGER EMERGENCY
+                        <button class="btn btn-danger action-btn shadow-glow" onclick="triggerSOS()">
+                            <i data-lucide="zap"></i> Trigger Emergency
                         </button>
                     </div>
                 </header>
 
                 <div class="scroll-container">
-                    
-                    <!-- Overview Module -->
-                    <div id="module-overview" class="module active">
-                        <div class="metrics-grid">
-                            <div class="metric-card glass-card">
-                                <h3>Active Alerts</h3>
-                                <div class="metric-value danger">24</div>
-                                <p class="metric-diff">+3 since yesterday</p>
+                    <div class="content-wrapper">
+                        
+                        <!-- Overview Module -->
+                        <div id="module-overview" class="module active">
+                            <div class="metrics-grid">
+                                <div class="metric-card glass-card">
+                                    <div class="metric-header">
+                                        <h3>Active Alerts</h3>
+                                        <i data-lucide="bell" class="text-danger"></i>
+                                    </div>
+                                    <div class="metric-value text-danger">24</div>
+                                    <p class="metric-diff text-muted"><span class="trend up"><i data-lucide="trending-up"></i> +3</span> since yesterday</p>
+                                </div>
+                                <div class="metric-card glass-card">
+                                    <div class="metric-header">
+                                        <h3>Safe Zones Open</h3>
+                                        <i data-lucide="shield-check" class="text-success"></i>
+                                    </div>
+                                    <div class="metric-value text-success">8</div>
+                                    <p class="metric-diff text-muted"><span class="trend good"><i data-lucide="check-circle-2"></i></span> All verified active</p>
+                                </div>
+                                <div class="metric-card glass-card">
+                                    <div class="metric-header">
+                                        <h3>Supplies Active</h3>
+                                        <i data-lucide="box" class="text-warning"></i>
+                                    </div>
+                                    <div class="metric-value text-warning">1,240</div>
+                                    <p class="metric-diff text-muted"><span class="trend down text-warning"><i data-lucide="alert-circle"></i> Shortage</span> in zone 4</p>
+                                </div>
                             </div>
-                            <div class="metric-card glass-card">
-                                <h3>Safe Zones Open</h3>
-                                <div class="metric-value success">8</div>
-                                <p class="metric-diff">All verified</p>
-                            </div>
-                            <div class="metric-card glass-card">
-                                <h3>Supplies Deployed</h3>
-                                <div class="metric-value waring">1,240</div>
-                                <p class="metric-diff">Critical shortage in zone 4</p>
-                            </div>
-                        </div>
-                        <div class="glass-card mt-2">
-                            <h3>Global Feed</h3>
-                            <div id="feed-container" class="feed">
-                                <div class="feed-item skeleton"></div>
-                                <div class="feed-item skeleton"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SOS Module -->
-                    <div id="module-sos" class="module hidden">
-                        <div class="glass-card">
-                            <h2>AI-Powered Emergency Triage</h2>
-                            <p class="text-sec mb-2">Describe the emergency. Gemini will classify and route it automatically.</p>
                             
-                            <form id="sos-form" onsubmit="reportEmergency(event)">
-                                <div class="input-group">
-                                    <textarea id="sos-description" rows="4" placeholder="E.g. There is a fire spreading fast on 5th avenue, people are trapped." required></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-danger" id="btn-sos-submit">
-                                    <span class="btn-text">Analyze & Broadcast Alert</span>
-                                    <span class="loader hidden"></span>
-                                </button>
-                            </form>
-
-                            <div id="sos-result" class="result-box hidden mt-2"></div>
-                        </div>
-                    </div>
-
-                    <!-- Supply Module -->
-                    <div id="module-supply" class="module hidden">
-                        <div class="glass-card">
-                            <h2>Inventory Management</h2>
-                            <p class="text-sec mb-2">Resources will be updated here. (Connecting to supply-service)</p>
-                            <div class="action-bar mb-2">
-                                <button class="btn btn-primary" onclick="testService('/supply/requests')">Fetch Resources</button>
-                            </div>
-                            <div id="supply-data" class="terminal-output">Awaiting command...</div>
-                        </div>
-                    </div>
-
-                    <!-- Safezone Module -->
-                    <div id="module-safezone" class="module hidden">
-                        <div class="glass-card">
-                            <h2>Safe Zone Locator</h2>
-                            <p class="text-sec mb-2">Find the nearest shelters. (Connecting to safezone-service)</p>
-                            <div class="action-bar mb-2">
-                                <button class="btn btn-primary" onclick="testService('/safezone')">Find Nearest</button>
-                            </div>
-                            <div id="safezone-data" class="terminal-output">Awaiting command...</div>
-                        </div>
-                    </div>
-
-                    <!-- Mental Health Module -->
-                    <div id="module-mentalhealth" class="module hidden">
-                        <div class="glass-card chat-interface">
-                            <h2>Crisis Support AI</h2>
-                            <p class="text-sec mb-2">Speak with our Gemini-powered mental health assistant.</p>
-                            <div id="chat-history" class="chat-history">
-                                <div class="chat-message bot">
-                                    <div class="msg-bubble">Hello, I'm here to support you during this crisis. How are you feeling right now?</div>
+                            <div class="glass-card mt-6 list-card">
+                                <h3>Global Command Feed</h3>
+                                <div id="feed-container" class="feed mt-4">
+                                    <div class="feed-item skeleton"></div>
+                                    <div class="feed-item skeleton mt-3"></div>
+                                    <div class="feed-item skeleton mt-3" style="width: 70%"></div>
                                 </div>
                             </div>
-                            <form class="chat-input-area" onsubmit="sendChatMessage(event)">
-                                <input type="text" id="chat-input" placeholder="Type your message here..." required>
-                                <button type="submit" class="btn btn-primary">Send</button>
-                            </form>
                         </div>
-                    </div>
 
-                    <!-- Settings Module -->
-                    <div id="module-settings" class="module hidden">
-                        <div class="glass-card">
-                            <h2>Profile Diagnostics</h2>
-                            <p class="text-sec mb-2">Verify your token and access rules.</p>
-                            <div class="action-bar mb-2">
-                                <button class="btn btn-primary" onclick="testService('/auth/me')">Test (/auth/me)</button>
-                                <button class="btn btn-primary" onclick="testService('/auth/admin')">Test (/auth/admin)</button>
+                        <!-- SOS Module -->
+                        <div id="module-sos" class="module hidden">
+                            <div class="glass-card max-w-3xl">
+                                <div class="flex-header mb-6">
+                                    <div class="icon-circle danger-bg">
+                                        <i data-lucide="triangle-alert"></i>
+                                    </div>
+                                    <div>
+                                        <h2>AI-Powered Emergency Triage</h2>
+                                        <p class="text-sec">Describe the situation. Our Gemini AI will classify and route your alert automatically.</p>
+                                    </div>
+                                </div>
+                                
+                                <form id="sos-form" onsubmit="reportEmergency(event)">
+                                    <div class="input-group">
+                                        <textarea id="sos-description" rows="5" placeholder="E.g. There is a rapidly spreading fire on 5th Avenue, people are trapped in the building." required></textarea>
+                                    </div>
+                                    <div class="form-actions mt-4">
+                                        <button type="submit" class="btn btn-danger" id="btn-sos-submit">
+                                            <i data-lucide="radio-tower"></i> <span class="btn-text">Analyze & Broadcast</span>
+                                            <span class="loader hidden"></span>
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <div id="sos-result" class="result-box hidden mt-6"></div>
                             </div>
-                            <div id="profile-data" class="terminal-output">Awaiting command...</div>
                         </div>
-                    </div>
 
+                        <!-- Supply Module -->
+                        <div id="module-supply" class="module hidden">
+                            <div class="glass-card max-w-3xl">
+                                <div class="flex-header mb-6">
+                                    <div class="icon-circle primary-bg">
+                                        <i data-lucide="package-search"></i>
+                                    </div>
+                                    <div>
+                                        <h2>Inventory & Resource Management</h2>
+                                        <p class="text-sec">Monitor resources across all active zones. (Connecting to supply-service)</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-bar mb-4">
+                                    <button class="btn btn-secondary" onclick="testService('/supply/requests')"><i data-lucide="refresh-cw"></i> Fetch Resources</button>
+                                </div>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        <span class="window-title">terminal</span>
+                                    </div>
+                                    <pre id="supply-data" class="terminal-output">Awaiting command execution...</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Safezone Module -->
+                        <div id="module-safezone" class="module hidden">
+                            <div class="glass-card max-w-3xl">
+                                <div class="flex-header mb-6">
+                                    <div class="icon-circle primary-bg">
+                                        <i data-lucide="map"></i>
+                                    </div>
+                                    <div>
+                                        <h2>Safe Zone Locator</h2>
+                                        <p class="text-sec">Pinpoint exact locations of nearest shelters and aid camps.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-bar mb-4">
+                                    <button class="btn btn-secondary" onclick="testService('/safezone')"><i data-lucide="crosshairs"></i> Locate Nearest</button>
+                                </div>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        <span class="window-title">terminal</span>
+                                    </div>
+                                    <pre id="safezone-data" class="terminal-output">Awaiting command execution...</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mental Health Module -->
+                        <div id="module-mentalhealth" class="module hidden">
+                            <div class="glass-card chat-interface max-w-3xl">
+                                <div class="flex-header border-bottom pb-4 mb-4">
+                                    <div class="icon-circle info-bg">
+                                        <i data-lucide="heart-handshake"></i>
+                                    </div>
+                                    <div>
+                                        <h2>Crisis Support AI</h2>
+                                        <p class="text-sec">Confidential chat with our Gemini-powered mental health assistant.</p>
+                                    </div>
+                                </div>
+                                
+                                <div id="chat-history" class="chat-history">
+                                    <div class="chat-message bot">
+                                        <div class="avatar-small info-bg"><i data-lucide="bot"></i></div>
+                                        <div class="msg-content">
+                                            <div class="msg-author">Raksha Assistant <span class="time">Just now</span></div>
+                                            <div class="msg-bubble">Hello. I am here to support you during this crisis. How are you feeling right now?</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form class="chat-input-area mt-4" onsubmit="sendChatMessage(event)">
+                                    <div class="input-wrapper chat-wrapper">
+                                        <input type="text" id="chat-input" placeholder="Type your message here..." required autocomplete="off">
+                                        <button type="submit" class="btn btn-primary icon-btn">
+                                            <i data-lucide="send"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Settings Module -->
+                        <div id="module-settings" class="module hidden">
+                            <div class="glass-card max-w-3xl">
+                                <div class="flex-header mb-6">
+                                    <div class="icon-circle gray-bg">
+                                        <i data-lucide="fingerprint"></i>
+                                    </div>
+                                    <div>
+                                        <h2>Profile & Diagnostics</h2>
+                                        <p class="text-sec">Verify your identity token and system access rules.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-bar mb-4">
+                                    <button class="btn btn-secondary" onclick="testService('/auth/me')"><i data-lucide="user-check"></i> Test Auth (Self)</button>
+                                    <button class="btn btn-secondary" onclick="testService('/auth/admin')"><i data-lucide="shield-alert"></i> Test Admin Access</button>
+                                </div>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        <span class="window-title">terminal</span>
+                                    </div>
+                                    <pre id="profile-data" class="terminal-output">Awaiting command execution...</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </main>
         </section>
         
-        <!-- Global Notification System -->
+        <!-- Notifications -->
         <div id="toast-container" class="toast-container"></div>
     </div>
     
+    <script>
+        // Initialize Lucide Icons immediately for performance
+        lucide.createIcons();
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

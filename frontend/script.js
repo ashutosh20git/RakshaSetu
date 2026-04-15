@@ -222,8 +222,28 @@ function appendChat(text, sender) {
     const msgDiv = document.createElement('div');
     const id = 'msg-' + Date.now();
     msgDiv.className = `chat-message ${sender}`;
-    msgDiv.innerHTML = `<div class="msg-bubble" id="${id}">${text}</div>`;
+    
+    // Support new UI structure with avatars
+    const isBot = sender === 'bot';
+    const authorName = isBot ? 'Raksha Assistant' : 'You';
+    const iconName = isBot ? 'bot' : 'user';
+    const bgClass = isBot ? 'info-bg' : 'primary-bg';
+    
+    msgDiv.innerHTML = `
+        <div class="avatar-small ${bgClass}"><i data-lucide="${iconName}"></i></div>
+        <div class="msg-content">
+            <div class="msg-author">${authorName} <span class="time">Just now</span></div>
+            <div class="msg-bubble" id="${id}">${text}</div>
+        </div>
+    `;
+    
     history.appendChild(msgDiv);
     history.scrollTop = history.scrollHeight;
+    
+    // Re-initialize icons for newly added elements
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+    
     return id;
 }
