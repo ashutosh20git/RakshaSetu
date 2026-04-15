@@ -7,3 +7,4 @@ gateway_logs.txt
 gateway_logs_clean.txt
 ps_clean.txt
 ps_output.txt
+.vercel
