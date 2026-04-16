@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -41,10 +42,10 @@
                     <!-- Login Form -->
                     <form id="form-login" class="auth-form active" onsubmit="handleAuth(event, 'login')">
                         <div class="input-group">
-                            <label>Phone Number</label>
+                            <label>Email</label>
                             <div class="input-wrapper">
-                                <i data-lucide="phone"></i>
-                                <input type="tel" name="phone" placeholder="+1 (555) 000-0000" required>
+                                <i data-lucide="mail"></i>
+                                <input type="email" name="email" placeholder="Email address" required>
                             </div>
                         </div>
                         <div class="input-group">
@@ -54,9 +55,13 @@
                                 <input type="password" name="password" placeholder="••••••••" required>
                             </div>
                         </div>
+                        <div class="g-recaptcha" data-sitekey="6LeafLosAAAAALKFqlHch8HX9l5EJUM1cb1Li-ZC"></div>
                         <button type="submit" class="btn btn-primary full-width mt-4" id="btn-login">
                             <span class="btn-text">Authenticate</span>
                             <span class="loader hidden"></span>
+                        </button>
+                        <button type="button" class="btn btn-secondary full-width mt-3" onclick="loginWithGoogle()">
+                            <i data-lucide="chrome"></i> <span class="btn-text">Continue with Google</span>
                         </button>
                     </form>
 
@@ -82,7 +87,7 @@
                             <label>Phone Number</label>
                             <div class="input-wrapper">
                                 <i data-lucide="phone"></i>
-                                <input type="tel" name="phone" placeholder="+1 (555) 000-0000" required>
+                                <input type="tel" name="phone" placeholder="+1 (555) 000-0000">
                             </div>
                         </div>
                         <div class="form-row">
@@ -106,9 +111,13 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="g-recaptcha" data-sitekey="6LeafLosAAAAALKFqlHch8HX9l5EJUM1cb1Li-ZC"></div>
                         <button type="submit" class="btn btn-primary full-width mt-4" id="btn-register">
                             <span class="btn-text">Create Identity</span>
                             <span class="loader hidden"></span>
+                        </button>
+                        <button type="button" class="btn btn-secondary full-width mt-3" onclick="loginWithGoogle()">
+                            <i data-lucide="chrome"></i> <span class="btn-text">Continue with Google</span>
                         </button>
                     </form>
                 </div>
@@ -404,6 +413,6 @@
         // Initialize Lucide Icons immediately for performance
         lucide.createIcons();
     </script>
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>

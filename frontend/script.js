@@ -1,6 +1,6 @@
+import { auth, googleProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, signOut, onAuthStateChanged } from './firebase.js';
 // Config
 const API_BASE = 'http://localhost:3000'; // Gateway
-
 // State
 let token = localStorage.getItem('raksha_token') || null;
 let user = JSON.parse(localStorage.getItem('raksha_user')) || null;
@@ -56,31 +56,46 @@ async function handleAuth(e, type) {
     const formData = new FormData(e.target);
     const payload = Object.fromEntries(formData.entries());
 
+    const recaptchaToken = grecaptcha.getResponse();
+    if (!recaptchaToken){
+        showToast('Please verify you are not a robot', true);
+        toggleLoader(btnId, false);
+        return;
+    }
     try {
-        const res = await fetch(`${API_BASE}/auth/${type}`, {
+       let firebaseUser;
+
+       if (type === 'register') {
+        const cred = await createUserWithEmailAndPassword(auth, payload.email, payload.password);
+        firebaseUser = cred.user;
+
+        await fetch(`${API_BASE}/auth/register`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({
+                name: payload.name,
+                email: payload.email,
+                phone: payload.phone || '',
+                role: payload.role || 'CIVILIAN',
+                firebaseUser: firebaseUser.uid
+            })
         });
-        const data = await res.json();
-        
-        if (!res.ok) throw new Error(data.message || data.error || 'Authentication failed');
-
-        if (type === 'login') {
-            token = data.token;
-            // Decode simple data if backend doesn't return full user
-            user = { phone: payload.phone, role: data.role || 'CIVILIAN' }; 
-            localStorage.setItem('raksha_token', token);
-            localStorage.setItem('raksha_user', JSON.stringify(user));
-            initDashboard();
-        } else {
-            showToast('Registration successful! Please login.');
-            document.querySelector('.tab-btn[data-target="login"]').click();
-        }
+        showToast('Registered! Please login.');
+        document.querySelector('.tab-btn[data-target="login"]').click();
+    }else{
+        const cred = await signInWithEmailAndPassword(auth, payload.email, payload.password);
+        firebaseUser = cred.user;
+        token = await firebaseUser.getIdToken();
+        user = { name: firebaseUser.displayName || payload.email, email: firebaseUser.email, role: 'CIVILIAN' };
+        localStorage.setItem('raksha_token', token);
+        localStorage.setItem('raksha_user', JSON.stringify(user));
+        initDashboard();
+    }
     } catch (err) {
         showToast(err.message, true);
     } finally {
         toggleLoader(btnId, false);
+        grecaptcha.reset();
     }
 }
 
@@ -119,13 +134,33 @@ function navigate(viewId) {
     document.getElementById(`module-${viewId}`).classList.add('active');
 }
 
-function logout() {
+async function logout() {
+    await signOut(auth);
     token = null;
     user = null;
     localStorage.removeItem('raksha_token');
     localStorage.removeItem('raksha_user');
     document.getElementById('view-dashboard').classList.remove('active');
     document.getElementById('view-auth').classList.add('active');
+}
+
+//Google-SignIn
+async function loginWithGoogle() {
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const firebaseUser = result.user;
+        token = await firebaseUser.getIdToken();
+        user = {
+            name: firebaseUser.displayName,
+            email: firebaseUser.email,
+            role: 'CIVILIAN'
+        };
+        localStorage.setItem('raksha_token', token);
+        localStorage.setItem('raksha_user', JSON.stringify(user));
+        initDashboard();
+    } catch (err) {
+        showToast(err.message, true);
+    }
 }
 
 // Global API Fetcher with Auth
@@ -272,3 +307,78 @@ function appendChat(text, sender) {
     
     return id;
 }
+
+
+async function fetchSupplyRequests() {
+    const container = document.getElementById('supply-cards');
+    if (!container) return;
+    container.innerHTML = `<p style="color:var(--text-muted);padding:0.5rem 0">Loading requests...</p>`;
+    try {
+        const data = await api('/supply/requests');
+        const requests = Array.isArray(data) ? data : (data.requests || []);
+        if (requests.length === 0) {
+            container.innerHTML = `<p style="color:var(--text-muted);padding:0.5rem 0">No open supply requests.</p>`;
+            return;
+        }
+        const urgencyColor = (u) => u >= 8 ? 'var(--danger)' : u >= 5 ? 'var(--warning)' : 'var(--success)';
+        const urgencyLabel = (u) => u >= 8 ? 'Critical' : u >= 5 ? 'Moderate' : 'Low';
+        const typeIcon = { FOOD: '🍞', MEDICAL: '💊', SHELTER: '🏕️' };
+        container.innerHTML = requests.map(r => `
+            <div style="display:flex;align-items:flex-start;gap:1rem;padding:1rem;background:var(--bg-elevated);border-radius:10px;border:1px solid var(--border-light);margin-bottom:0.6rem">
+                <div style="font-size:1.5rem;line-height:1">${typeIcon[r.type] || '📦'}</div>
+                <div style="flex:1;min-width:0">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem">
+                        <strong style="font-size:0.9rem">${r.type} — ${r.category || 'General'}</strong>
+                        <span style="font-size:0.75rem;font-weight:600;color:${urgencyColor(r.urgency)};padding:0.2rem 0.6rem;border-radius:20px">${urgencyLabel(r.urgency)} (${r.urgency}/10)</span>
+                    </div>
+                    <p style="color:var(--text-muted);font-size:0.83rem;margin:0">${r.description}</p>
+                    <span style="font-size:0.72rem;color:var(--text-muted)">${new Date(r.createdAt).toLocaleString()}</span>
+                </div>
+            </div>`).join('');
+    } catch (err) {
+        container.innerHTML = `<p style="color:var(--danger)">Failed to load: ${err.message}</p>`;
+    }
+}
+
+async function fetchSafeZones() {
+    const container = document.getElementById('safezone-cards');
+    if (!container) return;
+    container.innerHTML = `<p style="color:var(--text-muted);padding:0.5rem 0">Scanning for safe zones...</p>`;
+    try {
+        const data = await api('/safezone');
+        const zones = Array.isArray(data) ? data : (data.zones || []);
+        if (zones.length === 0) {
+            container.innerHTML = `<p style="color:var(--text-muted);padding:0.5rem 0">No safe zones registered yet.</p>`;
+            return;
+        }
+        const typeIcon = { MEDICAL: '🏥', SHELTER: '🏕️', FOOD: '🍞', GENERAL: '🛡️' };
+        container.innerHTML = zones.map(z => `
+            <div style="display:flex;align-items:flex-start;gap:1rem;padding:1rem;background:var(--bg-elevated);border-radius:10px;border:1px solid var(--border-light);margin-bottom:0.6rem">
+                <div style="font-size:1.5rem;line-height:1">${typeIcon[z.type] || '📍'}</div>
+                <div style="flex:1;min-width:0">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem">
+                        <strong style="font-size:0.9rem">${z.type || 'Safe Zone'}</strong>
+                        <span style="font-size:0.75rem;font-weight:600;color:${z.isVerified ? 'var(--success)' : 'var(--warning)'}">
+                            ${z.isVerified ? '✓ Verified' : '⏳ Pending'}
+                        </span>
+                    </div>
+                    <p style="color:var(--text-muted);font-size:0.83rem;margin:0">${z.description || 'No description'}</p>
+                    <span style="font-size:0.72rem;color:var(--text-muted)">${new Date(z.createdAt).toLocaleString()}</span>
+                </div>
+            </div>`).join('');
+    } catch (err) {
+        container.innerHTML = `<p style="color:var(--danger)">Failed to load: ${err.message}</p>`;
+    }
+}
+
+// Expose functions globally for HTML onclick handlers
+window.handleAuth = handleAuth;
+window.loginWithGoogle = loginWithGoogle;
+window.logout = logout;
+window.navigate = navigate;
+window.triggerSOS = triggerSOS;
+window.reportEmergency = reportEmergency;
+window.requestSupply = requestSupply;
+window.fetchSupplyRequests = fetchSupplyRequests;
+window.fetchSafeZones = fetchSafeZones;
+window.sendChatMessage = sendChatMessage;
